@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Corona Virus Tracker Application</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	rel="stylesheet">
+
+<link
+	href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css"
+	rel="stylesheet">
+
+<!-- Bootstrap core JavaScript-->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Page level plugin JavaScript-->
+<script
+	src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+
+<script
+	src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script
+	src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js'></script>
+
+<style type="text/css">
+table.dataTable thead .sorting:after, table.dataTable thead .sorting:before,
+	table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_asc:before,
+	table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_asc_disabled:before,
+	table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_desc:before,
+	table.dataTable thead .sorting_desc_disabled:after, table.dataTable thead .sorting_desc_disabled:before
+	{
+	bottom: .5em;
+}
+
+button:focus {
+	outline: 0;
+}
+
+body {
+	background-color: #f9f9fa
+}
+
+.flex {
+	-webkit-box-flex: 1;
+	-ms-flex: 1 1 auto;
+	flex: 1 1 auto
+}
+
+@media ( max-width :991.98px) {
+	.padding {
+		padding: 1.5rem
+	}
+}
+
+@media ( max-width :767.98px) {
+	.padding {
+		padding: 1rem
+	}
+}
+
+.padding {
+	padding: 2.5rem
+}
+
+.card {
+	background: #fff;
+	border-width: 0;
+	border-radius: .25rem;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+	margin-bottom: 1.5rem
+}
+
+.card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	word-wrap: break-word;
+	background-color: #fff;
+	background-clip: border-box;
+	border: 1px solid rgba(19, 24, 44, .125);
+	border-radius: .25rem
+}
+
+.card-header {
+	padding: .75rem 1.25rem;
+	margin-bottom: 0;
+	background-color: rgba(19, 24, 44, .03);
+	border-bottom: 1px solid rgba(19, 24, 44, .125)
+}
+
+.card-header:first-child {
+	border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0
+}
+
+card-footer, .card-header {
+	background-color: transparent;
+	border-color: rgba(160, 175, 185, .15);
+	background-clip: padding-box
+}
+</style>
+
+</head>
+
+<body>
+	<div class="container">
+		<div class="pos-f-t mb-3">
+			<div class="collapse" id="navbarToggleExternalContent">
+				<div class="bg-dark p-4">
+					<nav class="navbar navbar-expand-lg">
+						<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+							<li class="nav-item active"><a class="nav-link disabled h5"
+								href="/">Home <span class="sr-only">(current)</span>
+							</a></li>
+							<li class="nav-item"><a class="nav-link text-white h5"
+								href="/reportedCases">Cases Reported</a></li>
+							<li class="nav-item"><a class="nav-link text-white h5"
+								href="/deaths">Deaths</a></li>
+							<li class="nav-item"><a class="nav-link text-white h5"
+								href="/recovery">Recovery</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<nav class="navbar navbar-dark bg-dark">
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarToggleExternalContent"
+					aria-controls="navbarToggleExternalContent" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+			</nav>
+		</div>
+
+		<h3>Corona Virus Tracker</h3>
+		<p>This application shows the stats about the 2019-COVID virus.</p>
+
+		<div class="page-content page-container mb-2" id="page-content">
+			<div class="padding">
+				<div class="row">
+					<div class="container-fluid d-flex justify-content-center">
+						<div class="col-sm-8 col-md-6">
+							<div class="card">
+								<div class="card-header">Corona Doughnut Chart in India</div>
+								<div class="card-body" style="height: 420px">
+									<div class="chartjs-size-monitor"
+										style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+										<div class="chartjs-size-monitor-expand"
+											style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+											<div
+												style="position: absolute; width: 1000000px; height: 1000000px; left: 0; top: 0"></div>
+										</div>
+										<div class="chartjs-size-monitor-shrink"
+											style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+											<div
+												style="position: absolute; width: 200%; height: 200%; left: 0; top: 0"></div>
+										</div>
+									</div>
+									<canvas id="chart-line-india" width="299" height="240"
+										class="chartjs-render-monitor"
+										style="display: block; width: 299px; height: 240px;"></canvas>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="page-content page-container mb-2" id="page-content">
+			<div class="padding">
+				<div class="row">
+					<div class="container-fluid d-flex justify-content-center">
+						<div class="col-sm-8 col-md-6">
+							<div class="card">
+								<div class="card-header">Corona Doughnut Chart In World</div>
+								<div class="card-body" style="height: 420px">
+									<div class="chartjs-size-monitor"
+										style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+										<div class="chartjs-size-monitor-expand"
+											style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+											<div
+												style="position: absolute; width: 1000000px; height: 1000000px; left: 0; top: 0"></div>
+										</div>
+										<div class="chartjs-size-monitor-shrink"
+											style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+											<div
+												style="position: absolute; width: 200%; height: 200%; left: 0; top: 0"></div>
+										</div>
+									</div>
+									<canvas id="chart-line" width="299" height="240"
+										class="chartjs-render-monitor"
+										style="display: block; width: 299px; height: 240px;"></canvas>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<script th:inline="javascript">
+	    var totalCasesInWorld = [[${totalCasesInWorld}]];
+	    var totalDeathsInWorld = [[${totalDeathsInWorld}]];
+	    var totalRecoveryInWorld = [[${totalRecoveryInWorld}]];
+	    
+	    var totalCasesInIndia = [[${totalCasesInIndia}]];
+	    var totalDeathsInIndia = [[${totalDeathsInIndia}]];
+	    var totalRecoveryInIndia = [[${totalRecoveryInIndia}]];
+	
+		$(document).ready(
+				function() {
+					var ctx = $("#chart-line");
+					var myLineChart = new Chart(ctx, {
+						type : 'doughnut',
+						data : {
+							labels : [ "Total Cases In World", "Total Deaths In World", "Total Recovery In World" ],
+							datasets : [ {
+								data : [ totalCasesInWorld, totalDeathsInWorld, totalRecoveryInWorld],
+								backgroundColor : [ "rgba(0, 100, 255, 0.5)",
+								                    "rgba(255, 0, 0, 0.5)",
+								                    "rgba(100, 255, 0, 0.5)"]
+							} ]
+						},
+						options : {
+							title : {
+								display : true,
+								text : 'Corona Pandemic'
+							}
+						}
+					});
+					
+					var ctx = $("#chart-line-india");
+					var myLineChart = new Chart(ctx, {
+						type : 'doughnut',
+						data : {
+							labels : [ "Total Cases In India", "Total Deaths In India", "Total Recovery In India" ],
+							datasets : [ {
+								data : [ totalCasesInIndia, totalDeathsInIndia, totalRecoveryInIndia],
+								backgroundColor : [ "rgba(0, 100, 255, 0.5)",
+								                    "rgba(255, 0, 0, 0.5)",
+								                    "rgba(100, 255, 0, 0.5)"]
+							} ]
+						},
+						options : {
+							title : {
+								display : true,
+								text : 'Corona Pandemic In India'
+							}
+						}
+					});
+				});
+	</script>
+</body>
+
+</html>
+

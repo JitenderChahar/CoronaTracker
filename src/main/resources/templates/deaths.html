@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Corona Virus Tracker Application</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	rel="stylesheet">
+
+<link
+	href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css"
+	rel="stylesheet">
+
+<!-- Bootstrap core JavaScript-->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Page level plugin JavaScript-->
+<script
+	src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+
+<script
+	src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<style type="text/css">
+table.dataTable thead .sorting:after, table.dataTable thead .sorting:before,
+	table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_asc:before,
+	table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_asc_disabled:before,
+	table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_desc:before,
+	table.dataTable thead .sorting_desc_disabled:after, table.dataTable thead .sorting_desc_disabled:before
+	{
+	bottom: .5em;
+}
+
+button:focus {
+	outline: 0;
+}
+</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="pos-f-t mb-3">
+			<div class="collapse" id="navbarToggleExternalContent">
+				<div class="bg-dark p-4">
+					<nav class="navbar navbar-expand-lg">
+						<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+							<li class="nav-item"><a class="nav-link text-white h5"
+								href="/">Home </a></li>
+							<li class="nav-item"><a class="nav-link text-white h5"
+								href="/reportedCases">Cases Reported</a></li>
+							<li class="nav-item active"><a class="nav-link disabled h5"
+								href="/deaths">Deaths<span class="sr-only">(current)</span></a></li>
+							<li class="nav-item"><a class="nav-link text-white h5"
+								href="/recovery">Recovery</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<nav class="navbar navbar-dark bg-dark">
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarToggleExternalContent"
+					aria-controls="navbarToggleExternalContent" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+			</nav>
+		</div>
+
+		<h3>Corona Virus Tracker</h3>
+		<p>This application shows the stats about the 2019-COVID virus.</p>
+
+		<div class="card mb-5" style="background-color: #e9ecef">
+			<div class="row no-gutters">
+				<div class="col-md-4">
+					<img src="../images/deaths.jpg" class="card-img-top" alt="image">
+				</div>
+				<div class="col-md-8">
+					<div class="px-2">
+						<h1 class="card-title display-4" th:text="${totalCasesInWorld}"></h1>
+						<p class="card-text">Total deaths reported across the globe.</p>
+						<hr class="my-4">
+						<div>
+							<span class="card-text">Deaths reported from last day : </span> <span
+								class="card-text" th:text="${totalCasesFromLastDay}"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<table id="dataTable" class="table table-bordered table-sm"
+			style="margin-top: 2%" cellspacing="0" width="100%">
+			<thead>
+				<tr>
+					<th class="th-sm">STATE</th>
+					<th class="th-sm">COUNTRY</th>
+					<th class="th-sm">DEATHS REPORTED</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="coronaStat : ${coronaStats}">
+					<td th:text="${coronaStat.state}"></td>
+					<td th:text="${coronaStat.country}"></td>
+					<td th:text="${coronaStat.reportedCases}">0</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<th>STATE</th>
+					<th>COUNTRY</th>
+					<th>DEATHS REPORTED</th>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+
+	<script>
+		$(document).ready(function() {
+			$('#dataTable').DataTable();
+			$('.dataTables_length').addClass('bs-select');
+		});
+	</script>
+</body>
+
+</html>
+
